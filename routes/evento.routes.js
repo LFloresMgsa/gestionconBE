@@ -18,6 +18,11 @@ const router = express.Router();
 router.post('/auth/',authorization.token);
 
 router.get('/documents', webController.getPath);
+
+router.get('/documentos', webController.getPathv2);
+
+
+
 router.get('/pdf', webController.servePDF);
 
 // servicios con seguridad JWT

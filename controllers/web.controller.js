@@ -6,6 +6,7 @@ const mysql = require("mysql");
 const sc = require("../database/StringConection");
 const path = require('path');
 const fs = require('fs');
+const { v4: uuidv4 } = require('uuid');
 
 //const util = require('util');
 
@@ -41,6 +42,53 @@ const getPath = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     } 
   };
+  
+  const bytesToSize = (bytes) => {
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    if (bytes === 0) return '0 Byte';
+    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+    return Math.round(100 * (bytes / Math.pow(1024, i))) / 100 + ' ' + sizes[i];
+  };
+
+  const getPathv2 = async (req, res) => {
+    const category = req.query.category;
+  
+    if (!category) {
+      return res.status(400).json({ error: 'Falta el parámetro "category" en la solicitud.' });
+    }
+  
+    try {
+      const categoryPath = path.join(__dirname, '..', 'assets', 'documents', category);
+  
+      fs.readdir(categoryPath, (err, files) => {
+        if (err) {
+          return res.status(500).json({ error: 'Error al leer la carpeta.' });
+        }
+  
+        const fileDetails = files
+          .filter(file => file.endsWith('.pdf'))
+          .map(file => {
+            const filePath = path.join(categoryPath, file);
+            const stats = fs.statSync(filePath);
+  
+           return {
+            id: uuidv4(), // Generar un ID único para cada archivo
+            fileName: file,
+            fileSize: bytesToSize(stats.size), // Convertir el tamaño a KB o MB
+            lastModified: stats.mtime
+            
+          };
+          });
+  
+          
+        res.json({ files: fileDetails });
+      });
+    } catch (error) {
+      console.error('Error reading folder:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+  
   
   const servePDF = (req, res) => {
     const { category, document } = req.query;
@@ -115,4 +163,5 @@ module.exports = {
     getUsuario, 
     getPath,
     servePDF,
+    getPathv2,
 };
