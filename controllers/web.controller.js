@@ -104,7 +104,7 @@ const getPath = async (req, res) => {
       
       // Agrega el encabezado Content-Disposition para establecer el nombre del archivo
       res.setHeader('Content-Disposition', `inline; filename*=UTF-8''${encodeURIComponent(document)}`);
-      console.log('Nombre del documento:', document);
+      //console.log('Nombre del documento:', document);
       
       // Lee el contenido del archivo y envíalo como respuesta
       fs.createReadStream(filePath).pipe(res);
