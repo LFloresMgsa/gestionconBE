@@ -23,7 +23,7 @@ router.get('/documentos', webController.getPathv2);
 
 
 
-router.get('/pdf', webController.servePDF);
+router.get('/archivos', webController.serveFile);
 
 // servicios con seguridad JWT
 router.post('/sgm_usuarios/auth/',checkAuth,webController.getUsuario);
