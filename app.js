@@ -21,7 +21,7 @@ app.get("/contact", function (request, response) {
     });
 });
 
-// post request type
+//  post request type
 app.post("/catalogos", function (request, response) {
     response.json({
         status: 1,
