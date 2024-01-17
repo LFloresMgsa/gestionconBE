@@ -18,7 +18,7 @@ const router = express.Router();
 router.post('/auth/',authorization.token);
 
 
-router.get('/documentos', webController.getPathv2);
+router.post('/documentos', webController.getPathv2);
 
 
 
