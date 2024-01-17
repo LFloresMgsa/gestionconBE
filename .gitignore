@@ -21,8 +21,17 @@ build
 /build
 *.pem
 *.pdf
+*.mov
 *.mp3
 *.mp4
+*.exe
+*.docx
+*.pptx
+*.xlsx
+*.jpg
+*.png
+*.bmp
+*.zip
 
 website-user-passwords.json
 deploy/NS_WebApps/*
