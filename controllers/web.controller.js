@@ -96,7 +96,7 @@ const serveFile = (req, res) => {
 
   // Configurar las cabeceras de tipo de contenido
   if (fileExtension === '.pdf' || (fileExtension === '.jpg' || fileExtension === '.jpeg' || fileExtension === '.png' 
-  || fileExtension === '.bmp' || fileExtension === '.mp4' || fileExtension === '.wav')) {
+  || fileExtension === '.bmp' || fileExtension === '.mp4' || fileExtension === '.wav' || fileExtension === '.mp3')) {
     // Para PDF e imágenes, abrir en el navegador
     res.setHeader('Content-Disposition', 'inline');
   } else {
@@ -120,7 +120,13 @@ const serveFile = (req, res) => {
   } else if (fileExtension === '.mp4') {
     res.setHeader('Content-Type', 'video/mp4');
     // Aquí deberías enviar el archivo al cliente, por ejemplo, con res.sendFile()
-  }
+  } else if (fileExtension === '.wav') {
+    res.setHeader('Content-Type', 'video/wav');
+    // Aquí deberías enviar el archivo al cliente, por ejemplo, con res.sendFile()
+  } else if (fileExtension === '.mp3') {
+    res.setHeader('Content-Type', 'audio/mp3');
+    // Aquí deberías enviar el archivo al cliente, por ejemplo, con res.sendFile()
+}
 
   // Enviar el archivo al cliente
   res.sendFile(filePath);
