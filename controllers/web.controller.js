@@ -19,30 +19,7 @@ const ouUsuario = require("../models/sgm_usuarios.js");
 
 
 
-const getPath = async (req, res) => {
-  const category = req.query.category;
 
-  if (!category) {
-    return res.status(400).json({ error: 'Falta el parámetro "category" en la solicitud.' });
-  }
-
-  try {
-    const categoryPath = path.join(__dirname, '..', 'assets', 'documents', category);
-
-    fs.readdir(categoryPath, (err, files) => {
-      if (err) {
-        return res.status(500).json({ error: 'Error al leer la carpeta.' });
-      }
-
-      // No hay filtro por extensión, todos los archivos se incluirán
-      const fileNames = files;
-      res.json({ files: fileNames });
-    });
-  } catch (error) {
-    console.error('Error reading folder:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-};
 
 
 const bytesToSize = (bytes) => {
@@ -71,11 +48,19 @@ const getPathv2 = async (req, res) => {
         const filePath = path.join(categoryPath, file);
         const stats = fs.statSync(filePath);
 
+        const fechaHora = new Date(stats.mtime);
+        const dia = fechaHora.getDate().toString().padStart(2, '0');
+        const mes = (fechaHora.getMonth() + 1).toString().padStart(2, '0');
+        const anio = fechaHora.getFullYear();
+        const horas = fechaHora.getHours().toString().padStart(2, '0');
+        const minutos = fechaHora.getMinutes().toString().padStart(2, '0');
+        const segundos = fechaHora.getSeconds().toString().padStart(2, '0');
+
         return {
           id: uuidv4(),
           fileName: file,
           fileSize: bytesToSize(stats.size),
-          lastModified: stats.mtime,
+          lastModified: `${dia}/${mes}/${anio} ${horas}:${minutos}:${segundos}`,
         };
       });
 
@@ -86,6 +71,7 @@ const getPathv2 = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 const obtenerRutaDelArchivo = (category, document) => {
   // Lógica para obtener la ruta del archivo
@@ -109,7 +95,8 @@ const serveFile = (req, res) => {
   const fileExtension = path.extname(document).toLowerCase();
 
   // Configurar las cabeceras de tipo de contenido
-  if (fileExtension === '.pdf' || (fileExtension === '.jpg' || fileExtension === '.jpeg' || fileExtension === '.png')) {
+  if (fileExtension === '.pdf' || (fileExtension === '.jpg' || fileExtension === '.jpeg' || fileExtension === '.png' 
+  || fileExtension === '.bmp' || fileExtension === '.mp4' || fileExtension === '.wav')) {
     // Para PDF e imágenes, abrir en el navegador
     res.setHeader('Content-Disposition', 'inline');
   } else {
@@ -130,6 +117,9 @@ const serveFile = (req, res) => {
     res.setHeader('Content-Type', 'image/jpeg');
   } else if (fileExtension === '.png') {
     res.setHeader('Content-Type', 'image/png');
+  } else if (fileExtension === '.mp4') {
+    res.setHeader('Content-Type', 'video/mp4');
+    // Aquí deberías enviar el archivo al cliente, por ejemplo, con res.sendFile()
   }
 
   // Enviar el archivo al cliente
@@ -186,7 +176,6 @@ const getUsuario = async (request, response) => {
 // export functions
 module.exports = {
   getUsuario,
-  getPath,
   obtenerRutaDelArchivo,
   serveFile,
   getPathv2,
