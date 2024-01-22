@@ -21,6 +21,7 @@ router.post('/auth/',authorization.token);
 router.post('/documentos', webController.getPathv2);
 
 
+router.get('/directorios', webController.getDirectory);
 
 router.get('/archivos', webController.serveFile);
 

@@ -28,6 +28,10 @@ const token = async (request, response) => {
         // debe consultar a la bd el usuario y contrasseña
         // si se encontro debe generar el jwt sino return
         const _result = await getValidacion("BUSCARREGISTRO", Sgm_cUsuario, Sgm_cContrasena);
+
+        //console.log(request.body);
+
+
         let token="";
         if (_result && _result[0].length > 0 ) {
             if ( _result[0][0].Sgm_cUsuario){
