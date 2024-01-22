@@ -9,13 +9,6 @@ const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const mime = require('mime');
 
-
-const crypto = require('crypto');
-
-
-//const util = require('util');
-
-
 const db = require("../database/db.js");
 
 const ouUsuario = require("../models/sgm_usuarios.js");
@@ -24,7 +17,6 @@ const ouUsuario = require("../models/sgm_usuarios.js");
 
 const directorioBase = 'assets/documents/categoria';
 let currentIndex = 1; // Contador global para el campo "index"
-
 let roles = ' Root, All, Users, Admin ';
 
 const estructuraInicial = [
@@ -49,6 +41,7 @@ const estructuraInicial = [
     isDeleted: false,
     wasUpdated: false,
     security:false,
+    path:'',
     tabChildren: [
 
       {
@@ -72,6 +65,7 @@ const estructuraInicial = [
         isDeleted: false,
         wasUpdated: false,
         security:false,
+        path:'categoria',
         tabChildren: leerDirectorio('', currentIndex, 1), // Llama a la función para generar la estructura de "Categoria"
       },
 
@@ -122,16 +116,12 @@ const estructuraInicial = [
   // },  
 ];
 
-
-
 const bytesToSize = (bytes) => {
   const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
   if (bytes === 0) return '0 Byte';
   const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
   return Math.round(100 * (bytes / Math.pow(1024, i))) / 100 + ' ' + sizes[i];
 };
-
-
 
 const getDirectory = async (request, response) => {
   try {
@@ -147,8 +137,6 @@ const getDirectory = async (request, response) => {
   }
 
 }
-
-
 
 function leerDirectorio(dir, parent, level, _roles, _security) {
   const rutaCompleta = path.join(directorioBase, dir);
@@ -179,18 +167,6 @@ function leerDirectorio(dir, parent, level, _roles, _security) {
     }
 
   
-    const encriptar = (texto, clave) => {
-      const iv = crypto.randomBytes(16);
-      const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(clave, 'hex'), iv);
-      let crypted = cipher.update(texto, 'utf-8', 'hex');
-      crypted += cipher.final('hex');
-      return iv.toString('hex') + ':' + crypted;
-    };
-    
-    
-    const claveSecreta = "0123456789abcdef0123456789abcdef";    
-    
-
 
     const elemento = {
       id:String(currentIndex),
@@ -208,11 +184,12 @@ function leerDirectorio(dir, parent, level, _roles, _security) {
       tabOrder: i + 1,
       isVisible: true,
       componentName: '',
-      routeName: 'categoria?path=' + resultado.toLowerCase() + '&seg=' + _Security,
+      routeName: 'categoria?path=' + resultado.toLowerCase() ,
       isDisabled: false,
       isDeleted: false,
       wasUpdated: false,
       security:_Security,
+      path:resultado.toLowerCase(),
       tabChildren: leerDirectorio(rutaDirectorio, currentIndex, level + 1, _Roles, _Security),
     };
 
@@ -359,8 +336,6 @@ const serveFile = (req, res) => {
   // Enviar el archivo al cliente
   res.sendFile(filePath);
 };
-
-
 
 
 const getUsuario = async (request, response) => {
