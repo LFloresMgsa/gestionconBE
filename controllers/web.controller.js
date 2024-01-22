@@ -8,6 +8,11 @@ const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
 const mime = require('mime');
+
+
+const crypto = require('crypto');
+
+
 //const util = require('util');
 
 
@@ -43,6 +48,7 @@ const estructuraInicial = [
     isDisabled: false,
     isDeleted: false,
     wasUpdated: false,
+    security:false,
     tabChildren: [
 
       {
@@ -65,6 +71,7 @@ const estructuraInicial = [
         isDisabled: false,
         isDeleted: false,
         wasUpdated: false,
+        security:false,
         tabChildren: leerDirectorio('', currentIndex, 1), // Llama a la función para generar la estructura de "Categoria"
       },
 
@@ -143,7 +150,7 @@ const getDirectory = async (request, response) => {
 
 
 
-function leerDirectorio(dir, parent, level, _roles) {
+function leerDirectorio(dir, parent, level, _roles, _security) {
   const rutaCompleta = path.join(directorioBase, dir);
   const directorios = fs.readdirSync(rutaCompleta)
     .filter(item => fs.statSync(path.join(rutaCompleta, item)).isDirectory());
@@ -158,15 +165,32 @@ function leerDirectorio(dir, parent, level, _roles) {
 
 
     let _Roles = _roles ?? roles;
+    let _Security = _security ?? false;
     //console.log(directorio);
 
     if (directorio == "sistemas") {
       _Roles = ' Root ';
+      _Security=true;
     }
 
     if (directorio == "gerencia") {
       _Roles = ' Root, Admin ';
+      _Security=true;
     }
+
+  
+    const encriptar = (texto, clave) => {
+      const iv = crypto.randomBytes(16);
+      const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(clave, 'hex'), iv);
+      let crypted = cipher.update(texto, 'utf-8', 'hex');
+      crypted += cipher.final('hex');
+      return iv.toString('hex') + ':' + crypted;
+    };
+    
+    
+    const claveSecreta = "0123456789abcdef0123456789abcdef";    
+    
+
 
     const elemento = {
       id:String(currentIndex),
@@ -184,11 +208,12 @@ function leerDirectorio(dir, parent, level, _roles) {
       tabOrder: i + 1,
       isVisible: true,
       componentName: '',
-      routeName: 'categoria?path=' + resultado.toLowerCase(),
+      routeName: 'categoria?path=' + resultado.toLowerCase() + '&seg=' + _Security,
       isDisabled: false,
       isDeleted: false,
       wasUpdated: false,
-      tabChildren: leerDirectorio(rutaDirectorio, currentIndex, level + 1, _Roles),
+      security:_Security,
+      tabChildren: leerDirectorio(rutaDirectorio, currentIndex, level + 1, _Roles, _Security),
     };
 
     elementos.push(elemento);
