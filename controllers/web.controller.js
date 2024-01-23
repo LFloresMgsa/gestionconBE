@@ -21,7 +21,7 @@ let roles = ' Root, All, Users, Admin ';
 
 const estructuraInicial = [
   {
-    id:'1',
+    id: '1',
     index: currentIndex++,
     tabID: currentIndex,
     tabName: 'Inicio',
@@ -39,63 +39,35 @@ const estructuraInicial = [
     isDisabled: false,
     isDeleted: false,
     wasUpdated: false,
-    security:false,
-    path:'inicio',       
+    security: false,
+    path: 'inicio',
     tabChildren: [],
-  }, 
+  },
+
   {
-    
-    id:'root',
+    id: String(currentIndex),
     index: currentIndex++,
     tabID: currentIndex,
     portalID: 9,
-    tabName: 'Directorio',
+    tabName: 'Documentos',
     title: '',
     description: '',
-    parentId: -1,
+    parentId: 1,
     level: 0,
     authorizedRoles: '65;68;-3;',
     authorizedRolesAllString: ' Root, All, Users, Admin ',
     administratorRoles: '65;',
-    tabOrder: 1,
+    tabOrder: 2,
     isVisible: true,
     componentName: '',
-    routeName: 'inicio',
+    routeName: 'categoria',
     isDisabled: false,
     isDeleted: false,
     wasUpdated: false,
-    security:false,
-    path:'',
-    tabChildren: [
-
-      {
-        id:String(currentIndex),
-        index: currentIndex++,
-        tabID: currentIndex,
-        portalID: 9,
-        tabName: 'Categoria',
-        title: '',
-        description: '',
-        parentId: 1,
-        level: 0,
-        authorizedRoles: '65;68;-3;',
-        authorizedRolesAllString: ' Root, All, Users, Admin ',
-        administratorRoles: '65;',
-        tabOrder: 2,
-        isVisible: true,
-        componentName: '',
-        routeName: 'categoria',
-        isDisabled: false,
-        isDeleted: false,
-        wasUpdated: false,
-        security:false,
-        path:'categoria',
-        tabChildren: leerDirectorio('', currentIndex, 1), // Llama a la función para generar la estructura de "Categoria"
-      },
-
-    ],
+    security: false,
+    path: 'categoria',
+    tabChildren: leerDirectorio('', currentIndex, 1), // Llama a la función para generar la estructura de "Categoria"
   },
-
  
 ];
 
@@ -141,18 +113,18 @@ function leerDirectorio(dir, parent, level, _roles, _security) {
 
     if (directorio == "sistemas") {
       _Roles = ' Root ';
-      _Security=true;
+      _Security = true;
     }
 
     if (directorio == "gerencia") {
       _Roles = ' Root, Admin ';
-      _Security=true;
+      _Security = true;
     }
 
-  
+
 
     const elemento = {
-      id:String(currentIndex),
+      id: String(currentIndex),
       index: currentIndex++,
       tabID: currentIndex,
       portalID: 9,
@@ -167,12 +139,12 @@ function leerDirectorio(dir, parent, level, _roles, _security) {
       tabOrder: i + 1,
       isVisible: true,
       componentName: '',
-      routeName: 'categoria?path=' + resultado.toLowerCase() ,
+      routeName: 'categoria?path=' + resultado.toLowerCase(),
       isDisabled: false,
       isDeleted: false,
       wasUpdated: false,
-      security:_Security,
-      path:resultado.toLowerCase(),
+      security: _Security,
+      path: resultado.toLowerCase(),
       tabChildren: leerDirectorio(rutaDirectorio, currentIndex, level + 1, _Roles, _Security),
     };
 
