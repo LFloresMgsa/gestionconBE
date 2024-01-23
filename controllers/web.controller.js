@@ -16,16 +16,40 @@ const ouUsuario = require("../models/sgm_usuarios.js");
 //get all data api with store procedure
 
 const directorioBase = 'assets/documents/categoria';
-let currentIndex = 1; // Contador global para el campo "index"
+let currentIndex = 2; // Contador global para el campo "index"
 let roles = ' Root, All, Users, Admin ';
 
 const estructuraInicial = [
   {
+    id:'1',
+    index: currentIndex++,
+    tabID: currentIndex,
+    tabName: 'Inicio',
+    title: '',
+    description: '',
+    parentId: -1,
+    level: 0,
+    authorizedRoles: '65;-1;',
+    authorizedRolesAllString: ' Root, All, Users, Admin ',
+    administratorRoles: '65;',
+    tabOrder: 1,
+    isVisible: true,
+    componentName: '',
+    routeName: 'inicio',
+    isDisabled: false,
+    isDeleted: false,
+    wasUpdated: false,
+    security:false,
+    path:'inicio',       
+    tabChildren: [],
+  }, 
+  {
+    
     id:'root',
     index: currentIndex++,
     tabID: currentIndex,
     portalID: 9,
-    tabName: 'Inicio',
+    tabName: 'Directorio',
     title: '',
     description: '',
     parentId: -1,
@@ -72,48 +96,7 @@ const estructuraInicial = [
     ],
   },
 
-  // {
-  //   index: currentIndex++,
-  //   tabID: currentIndex,
-  //   portalID: 9,
-  //   tabName: 'Sistemas',
-  //   title: '',
-  //   description: '',
-  //   parentId: -1,
-  //   level: 0,
-  //   authorizedRoles: '65;-1;',
-  //   authorizedRolesAllString: ' Root ',
-  //   administratorRoles: '65;',
-  //   tabOrder: 3,
-  //   isVisible: true,
-  //   componentName: '',
-  //   routeName: 'sistemas',
-  //   isDisabled: false,
-  //   isDeleted: false,
-  //   wasUpdated: false,
-  //   tabChildren: [],
-  // },
-  // {
-  //   index: currentIndex++,
-  //   tabID: currentIndex,
-  //   portalID: 9,
-  //   tabName: 'Gerencia',
-  //   title: '',
-  //   description: '',
-  //   parentId: -1,
-  //   level: 0,
-  //   authorizedRoles: '65;-1;',
-  //   authorizedRolesAllString: ' Root, Admin ',
-  //   administratorRoles: '65;',
-  //   tabOrder: 3,
-  //   isVisible: true,
-  //   componentName: '',
-  //   routeName: 'gerencia',
-  //   isDisabled: false,
-  //   isDeleted: false,
-  //   wasUpdated: false,
-  //   tabChildren: [],
-  // },  
+ 
 ];
 
 const bytesToSize = (bytes) => {
