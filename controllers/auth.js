@@ -9,7 +9,7 @@ function getValidacion(Accion, user, password) {
     // create mysql connection
     const connection = db.getConnection();
     return new Promise((resolve, reject) => {
-        connection.query("CALL sp_sgm_usuarios (?, ?, ?, ?, ?, ?) ", [Accion, user, "", password, "",""],
+        connection.query("CALL sp_sgm_usuarios (?, ?, ?, ?, ?, ?,?) ", [Accion, user, "", password, "","",""],
             function (error, results, fields) {
 
                 if (error) {

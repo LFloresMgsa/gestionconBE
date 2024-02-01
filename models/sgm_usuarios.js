@@ -10,7 +10,8 @@ const sgm_usuarios = sequelize.define('sgm_usuarios', {
     Sgm_cNombre: { type: DataTypes.STRING },
     Sgm_cContrasena: { type: DataTypes.STRING },
     Sgm_cObservaciones: { type: DataTypes.STRING },
-    Sgm_cPerfil: { type: DataTypes.STRING }
+    Sgm_cPerfil: { type: DataTypes.STRING },
+    Sgm_cAccesodeSubida: { type: DataTypes.STRING }
 })
 
 module.exports = sgm_usuarios;

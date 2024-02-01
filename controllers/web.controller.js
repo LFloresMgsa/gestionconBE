@@ -311,9 +311,11 @@ const getUsuario = async (request, response) => {
     ouUsuario.Sgm_cContrasena = params.Sgm_cContrasena;
     ouUsuario.Sgm_cObservaciones = params.Sgm_cObservaciones;
     ouUsuario.Sgm_cPerfil = params.Sgm_cPerfil;
-    connection.query("CALL sp_sgm_usuarios (?,?,?,?,?,?) ", [
+    ouUsuario.Sgm_cAccesodeSubida = params.Sgm_cAccesodeSubida;
+    connection.query("CALL sp_sgm_usuarios (?,?,?,?,?,?,?) ", [
       ouUsuario.Accion, ouUsuario.Sgm_cUsuario, ouUsuario.Sgm_cNombre,
-      ouUsuario.Sgm_cContrasena, ouUsuario.Sgm_cObservaciones, ouUsuario.Sgm_cPerfil
+      ouUsuario.Sgm_cContrasena, ouUsuario.Sgm_cObservaciones, ouUsuario.Sgm_cPerfil,
+      ouUsuario.Sgm_cAccesodeSubida
     ], function (error, results, fields) {
 
       if (error) {
